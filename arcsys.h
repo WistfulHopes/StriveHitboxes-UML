@@ -114,7 +114,7 @@ public:	FIELD(0x18, bool, is_player);
 	  FIELD(0x4C0, int, gravity);
 	  FIELD(0x4EC, int, pushbox_front_offset);
 	  FIELD(0x72C, int, throw_box_top);
-	  FIELD(0x730, int, throw_box_bottom);
+	  FIELD(0x734, int, throw_box_bottom);
 	  FIELD(0x738, int, throw_range);
 	  FIELD(0x113C, int, backdash_invuln);
 	  // bbscript
