@@ -643,11 +643,83 @@ void install_hooks()
 		vtable_hook(AHUD_vtable, AHUD_PostRender_index, hook_AHUD_PostRender);
 }
 
+bool ShouldUpdateBattle = true;
+
+typedef void(*UpdateBattle_Func)(AREDGameState_Battle*, float, bool);
+UpdateBattle_Func UpdateBattle;
+
+enum GAME_MODE : int32_t
+{
+	GAME_MODE_DEBUG_BATTLE = 0x0,
+	GAME_MODE_ADVERTISE = 0x1,
+	GAME_MODE_MAINTENANCEVS = 0x2,
+	GAME_MODE_ARCADE = 0x3,
+	GAME_MODE_MOM = 0x4,
+	GAME_MODE_SPARRING = 0x5,
+	GAME_MODE_VERSUS = 0x6,
+	GAME_MODE_VERSUS_PREINSTALL = 0x7,
+	GAME_MODE_TRAINING = 0x8,
+	GAME_MODE_TOURNAMENT = 0x9,
+	GAME_MODE_RANNYU_VERSUS = 0xA,
+	GAME_MODE_EVENT = 0xB,
+	GAME_MODE_SURVIVAL = 0xC,
+	GAME_MODE_STORY = 0xD,
+	GAME_MODE_MAINMENU = 0xE,
+	GAME_MODE_TUTORIAL = 0xF,
+	GAME_MODE_LOBBYTUTORIAL = 0x10,
+	GAME_MODE_CHALLENGE = 0x11,
+	GAME_MODE_KENTEI = 0x12,
+	GAME_MODE_MISSION = 0x13,
+	GAME_MODE_GALLERY = 0x14,
+	GAME_MODE_LIBRARY = 0x15,
+	GAME_MODE_NETWORK = 0x16,
+	GAME_MODE_REPLAY = 0x17,
+	GAME_MODE_LOBBYSUB = 0x18,
+	GAME_MODE_MAINMENU_QUICK_BATTLE = 0x19,
+	GAME_MODE_UNDECIDED = 0x1A,
+	GAME_MODE_INVALID = 0x1B,
+};
+
+class UREDGameCommon : public UE4::UGameInstance {};
+UREDGameCommon* GameCommon;
+
+typedef int(*GetGameMode_Func)(UREDGameCommon*);
+GetGameMode_Func GetGameMode;
+
+void(*UpdateBattle_Orig)(AREDGameState_Battle*, float, bool);
+void UpdateBattle_New(AREDGameState_Battle* GameState, float DeltaTime, bool bUpdateDraw) {
+	if (ShouldUpdateBattle || GetGameMode(GameCommon) != (int)GAME_MODE_TRAINING)
+		UpdateBattle_Orig(GameState, DeltaTime, bUpdateDraw);
+}
+
+BPFUNCTION(ToggleUpdateBattle)
+{
+	ShouldUpdateBattle = !ShouldUpdateBattle;
+}
+
+BPFUNCTION(AdvanceBattle)
+{
+	if (ShouldUpdateBattle || GetGameMode(GameCommon) != (int)GAME_MODE_TRAINING) return;
+	UE4::UClass* Class = UE4::UObject::FindClass("Class RED.REDGameState_Battle");
+	if (*UE4::UWorld::GWorld == nullptr)
+		return;
+
+	const auto* GameState = ((UWorld*)(*UE4::UWorld::GWorld))->GameState;
+
+	if (!GameState->IsA(Class))
+		return;
+
+	UpdateBattle_Orig((AREDGameState_Battle*)GameState, 0.01666666f, true);
+}
+
 // Only Called Once, if you need to hook shit, declare some global non changing values
 void StriveHitboxes::InitializeMod()
 {
 	UE4::InitSDK();
 	SetupHooks();
+
+	REGISTER_FUNCTION(ToggleUpdateBattle);
+	REGISTER_FUNCTION(AdvanceBattle);
 
 	HMODULE BaseModule = GetModuleHandleW(NULL);
 	uint64_t* FMemory_Free_Addr = (uint64_t*)sigscan::get().scan("\x48\x85\xC9\x74\x2E\x53\x48\x83\xEC\x20\x48\x8B\xD9\x48\x8B\x00\x00\x00\x00\x00\x48\x85\xC9", "xxxxxxxxxxxxxxx?????xxx");
@@ -664,9 +736,18 @@ void StriveHitboxes::InitializeMod()
 	uint32_t* offset = std::bit_cast<uint32_t*>(mov_instruction + 0x3);
 	GMalloc = *std::bit_cast<FMalloc**>(next_instruction + *offset);
 
-	//MinHook::Init(); //Uncomment if you plan to do hooks
+	MinHook::Init(); //Uncomment if you plan to do hooks
+
+	uintptr_t UpdateBattle_Addr = (uintptr_t)sigscan::get().scan("\x45\x33\xF6\x0F\xB6\xD8", "xxxxxx") - 0x32;
+	UpdateBattle = (UpdateBattle_Func)UpdateBattle_Addr;
+	MinHook::Add((DWORD_PTR)UpdateBattle, &UpdateBattle_New, &UpdateBattle_Orig, "UpdateBattle");
+
+	uintptr_t GetGameMode_Addr = (uintptr_t)sigscan::get().scan("\x0F\xB6\x81\xF0\x02\x00\x00\xC3", "xxxxxxxx");
+	GetGameMode = (GetGameMode_Func)GetGameMode_Addr;
 
 	install_hooks();
+
+	GameCommon = (UREDGameCommon*)UE4::UGameplayStatics::GetGameInstance();
 
 	//UseMenuButton = true; // Allows Mod Loader To Show Button
 }

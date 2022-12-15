@@ -118,16 +118,16 @@ public:	FIELD(0x18, bool, is_player);
 	  FIELD(0x740, int, throw_range);
 	  FIELD(0x1144, int, backdash_invuln);
 	  // bbscript
-	  FIELD(0x11A0, bbscript::event_bitmask, event_handler_bitmask);
-	  FIELD(0x11F0, char*, bbs_file);
-	  FIELD(0x11F8, char*, script_base);
-	  FIELD(0x1200, char*, next_script_cmd);
-	  FIELD(0x1208, char*, first_script_cmd);
-	  FIELD(0x123C, int, sprite_frames);
-	  FIELD(0x1230, int, sprite_duration);
-	  FIELD(0x131C, int, sprite_changes);
-	  ARRAY_FIELD(0x1328, event_handler[(size_t)bbscript::event_type::MAX], event_handlers);
-	  ARRAY_FIELD(0x3710, char[32], state_name);
+	  FIELD(0x11A8, bbscript::event_bitmask, event_handler_bitmask);
+	  FIELD(0x11F8, char*, bbs_file);
+	  FIELD(0x1200, char*, script_base);
+	  FIELD(0x1208, char*, next_script_cmd);
+	  FIELD(0x1210, char*, first_script_cmd);
+	  FIELD(0x1244, int, sprite_frames);
+	  FIELD(0x1238, int, sprite_duration);
+	  FIELD(0x1324, int, sprite_changes);
+	  ARRAY_FIELD(0x1330, event_handler[(size_t)bbscript::event_type::MAX], event_handlers);
+	  ARRAY_FIELD(0x3718, char[32], state_name);
 
 	  bool is_active() const;
 	  bool is_pushbox_active() const;
