@@ -80,54 +80,54 @@ static_assert(sizeof(event_handler) == 0x58);
 class asw_entity {
 public:	FIELD(0x18, bool, is_player);
 	  FIELD(0x44, unsigned char, player_index);
-	  FIELD(0x68, hitbox*, hitboxes);
-	  FIELD(0xFC, int, hurtbox_count);
-	  FIELD(0x100, int, hitbox_count);
+	  FIELD(0x70, hitbox*, hitboxes);
+	  FIELD(0x104, int, hurtbox_count);
+	  FIELD(0x108, int, hitbox_count);
 	  //   _____    ____    _    _   _   _   _______   ______   _____  
 	  //  / ____|  / __ \  | |  | | | \ | | |__   __| |  ____| |  __ \ 
 	  // | |      | |  | | | |  | | |  \| |    | |    | |__    | |__) |
 	  // | |      | |  | | | |  | | | . ` |    | |    |  __|   |  _  / 
 	  // | |____  | |__| | | |__| | | |\  |    | |    | |____  | | \ \ 
 	  //  \_____|  \____/   \____/  |_| \_|    |_|    |______| |_|  \_\ 
-	  BIT_FIELD(0x198, 0x4000000, cinematic_counter);
-	  FIELD(0x1B0, int, state_frames);
-	  FIELD(0x2B0, asw_entity*, opponent);
-	  FIELD(0x2C8, asw_entity*, parent);
-	  FIELD(0x308, asw_entity*, attached);
-	  BIT_FIELD(0x380, 1, airborne);
-	  BIT_FIELD(0x380, 256, counterhit);
-	  BIT_FIELD(0x384, 16, strike_invuln);
-	  BIT_FIELD(0x384, 32, throw_invuln);
-	  BIT_FIELD(0x384, 64, wakeup);
-	  FIELD(0x394, direction, facing);
-	  FIELD(0x398, int, pos_x);
-	  FIELD(0x39C, int, pos_y);
-	  FIELD(0x3A0, int, pos_z);
-	  FIELD(0x3A4, int, angle_x);
-	  FIELD(0x3A8, int, angle_y);
-	  FIELD(0x3AC, int, angle_z);
-	  FIELD(0x3B4, int, scale_x);
-	  FIELD(0x3B8, int, scale_y);
-	  FIELD(0x3BC, int, scale_z);
-	  FIELD(0x4B8, int, vel_x);
-	  FIELD(0x4BC, int, vel_y);
-	  FIELD(0x4C0, int, gravity);
-	  FIELD(0x4EC, int, pushbox_front_offset);
-	  FIELD(0x72C, int, throw_box_top);
-	  FIELD(0x734, int, throw_box_bottom);
-	  FIELD(0x738, int, throw_range);
-	  FIELD(0x113C, int, backdash_invuln);
+	  BIT_FIELD(0x1A0, 0x4000000, cinematic_counter);
+	  FIELD(0x1B8, int, state_frames);
+	  FIELD(0x2B8, asw_entity*, opponent);
+	  FIELD(0x2D0, asw_entity*, parent);
+	  FIELD(0x310, asw_entity*, attached);
+	  BIT_FIELD(0x388, 1, airborne);
+	  BIT_FIELD(0x388, 256, counterhit);
+	  BIT_FIELD(0x38C, 16, strike_invuln);
+	  BIT_FIELD(0x38C, 32, throw_invuln);
+	  BIT_FIELD(0x38C, 64, wakeup);
+	  FIELD(0x39C, direction, facing);
+	  FIELD(0x3A0, int, pos_x);
+	  FIELD(0x3A4, int, pos_y);
+	  FIELD(0x3A8, int, pos_z);
+	  FIELD(0x3AC, int, angle_x);
+	  FIELD(0x3B0, int, angle_y);
+	  FIELD(0x3B4, int, angle_z);
+	  FIELD(0x3BC, int, scale_x);
+	  FIELD(0x3C0, int, scale_y);
+	  FIELD(0x3C4, int, scale_z);
+	  FIELD(0x4C0, int, vel_x);
+	  FIELD(0x4C4, int, vel_y);
+	  FIELD(0x4C8, int, gravity);
+	  FIELD(0x4F4, int, pushbox_front_offset);
+	  FIELD(0x734, int, throw_box_top);
+	  FIELD(0x73C, int, throw_box_bottom);
+	  FIELD(0x740, int, throw_range);
+	  FIELD(0x1144, int, backdash_invuln);
 	  // bbscript
-	  FIELD(0x1168, bbscript::event_bitmask, event_handler_bitmask);
-	  FIELD(0x11C0, bbscript::code_pointer, script_base);
-	  FIELD(0x11C8, bbscript::code_pointer, next_script_cmd);
-	  FIELD(0x11D0, bbscript::code_pointer, first_script_cmd);
-	  FIELD(0x11F8, int, sprite_frames);
-	  FIELD(0x1120, int, sprite_duration);
-	  FIELD(0x1204, int, sprite_changes);
-	  ARRAY_FIELD(0x12F0, event_handler[(size_t)bbscript::event_type::MAX], event_handlers);
-	  ARRAY_FIELD(0x36E0, char[32], state_name);
-	  ARRAY_FIELD(0x3700, char[32], state_name2);
+	  FIELD(0x11A0, bbscript::event_bitmask, event_handler_bitmask);
+	  FIELD(0x11F0, char*, bbs_file);
+	  FIELD(0x11F8, char*, script_base);
+	  FIELD(0x1200, char*, next_script_cmd);
+	  FIELD(0x1208, char*, first_script_cmd);
+	  FIELD(0x123C, int, sprite_frames);
+	  FIELD(0x1230, int, sprite_duration);
+	  FIELD(0x131C, int, sprite_changes);
+	  ARRAY_FIELD(0x1328, event_handler[(size_t)bbscript::event_type::MAX], event_handlers);
+	  ARRAY_FIELD(0x3710, char[32], state_name);
 
 	  bool is_active() const;
 	  bool is_pushbox_active() const;

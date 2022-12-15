@@ -165,6 +165,7 @@
     <ClInclude Include="bitmask.h" />
     <ClInclude Include="math_util.h" />
     <ClInclude Include="sigscan.h" />
+    <ClInclude Include="simulation.h" />
     <ClInclude Include="StriveHitboxes.h" />
     <ClInclude Include="struct_util.h" />
   </ItemGroup>

@@ -10,7 +10,7 @@ const auto asw_scene_camera_transform = (asw_scene_camera_transform_t)(
 
 using asw_entity_is_active_t = bool(*)(const asw_entity*, int);
 const auto asw_entity_is_active = (asw_entity_is_active_t)(
-	sigscan::get().scan("\x0F\x85\x86\x00\x00\x00\x8B\x81\x9C\x01", "xxxxxxxxxx") - 0x1C);
+	sigscan::get().scan("\x0F\x85\x00\x00\x00\x00\x8B\x81\xA4\x01", "xx????xxxx") - 0x1C);
 
 using asw_entity_is_pushbox_active_t = bool(*)(const asw_entity*);
 const auto asw_entity_is_pushbox_active = (asw_entity_is_pushbox_active_t)(
@@ -18,7 +18,7 @@ const auto asw_entity_is_pushbox_active = (asw_entity_is_pushbox_active_t)(
 
 using asw_entity_get_pos_x_t = int(*)(const asw_entity*);
 const auto asw_entity_get_pos_x = (asw_entity_get_pos_x_t)(
-	sigscan::get().scan("\xEB\x06\x8B\xBB\x98\x03\x00\x00", "xxxxxxxx") - 0x104);
+	sigscan::get().scan("\xEB\x00\x8B\xBB\xA0\x03\x00\x00", "x?xxxxxx") - 0x104);
 
 using asw_entity_get_pos_y_t = int(*)(const asw_entity*);
 const auto asw_entity_get_pos_y = (asw_entity_get_pos_y_t)(
@@ -26,15 +26,15 @@ const auto asw_entity_get_pos_y = (asw_entity_get_pos_y_t)(
 
 using asw_entity_pushbox_width_t = int(*)(const asw_entity*);
 const auto asw_entity_pushbox_width = (asw_entity_pushbox_width_t)(
-	sigscan::get().scan("\xF6\x81\x80\x03\x00\x00\x01\x75\x40\xE8\xB9\xFC\xFF\xFF", "xxxxxxxxxxxxxx") - 0x19);
+	sigscan::get().scan("\xF6\x81\x88\x03\x00\x00\x01\x75\x40\xE8\xB9\xFC\xFF\xFF", "xxxxxxxxxxxxxx") - 0x19);
 
 using asw_entity_pushbox_height_t = int(*)(const asw_entity*);
 const auto asw_entity_pushbox_height = (asw_entity_pushbox_height_t)(
-	sigscan::get().scan("\xF6\x81\x80\x03\x00\x00\x01\x75\x40\xE8\x99\xFD\xFF\xFF", "xxxxxxxxxxxxxx") - 0x19);
+	sigscan::get().scan("\xF6\x81\x88\x03\x00\x00\x01\x75\x40\xE8\x99\xFD\xFF\xFF", "xxxxxxxxxxxxxx") - 0x19);
 
 using asw_entity_pushbox_bottom_t = int(*)(const asw_entity*);
 const auto asw_entity_pushbox_bottom = (asw_entity_pushbox_bottom_t)(
-	sigscan::get().scan("\xF6\x81\x80\x03\x00\x00\x01\x75\x09\xE8\x06\xFD\xFF\xFF", "xxxxxxxxxxxxxx") - 0x1C);
+	sigscan::get().scan("\xF6\x81\x88\x03\x00\x00\x01\x75\x09\xE8\x06\xFD\xFF\xFF", "xxxxxxxxxxxxxx") - 0x1C);
 
 using asw_entity_get_pushbox_t = void(*)(const asw_entity*, int*, int*, int*, int*);
 const auto asw_entity_get_pushbox = (asw_entity_get_pushbox_t)(

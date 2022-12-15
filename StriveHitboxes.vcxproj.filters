@@ -63,5 +63,8 @@
     <ClInclude Include="bbscript.h">
       <Filter>Mod</Filter>
     </ClInclude>
+    <ClInclude Include="simulation.h">
+      <Filter>Mod</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
